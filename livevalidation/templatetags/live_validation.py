@@ -33,7 +33,7 @@ class ValidationNode(template.Node):
         for name,field in fields.items():
             result.append(self.do_field('%s%s'%(prefix,name),field))
         try:
-            result.append(LV_EXTRA_SCRIPT%{'fieldname':'id_%s'%fields.keys()[1]})
+            result.append(LV_EXTRA_SCRIPT%{'fieldname':'id_%s%s'%(prefix.replace('-', '_'),fields.keys()[1])})
         except:
             return ''
         result.append('</script>')
