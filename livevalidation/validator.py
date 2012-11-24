@@ -20,7 +20,7 @@ def inner(items):
         elif k == 'pattern':
             yield '%s: new RegExp(/%s/)'%(k,v)
         else:
-            yield '%s: %r'%(k,v)
+            yield '%s: "%s"'%(k,v)
             
 class Meta:
     """
