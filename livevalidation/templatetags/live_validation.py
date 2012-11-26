@@ -2,6 +2,7 @@ from livevalidation.validator import *
 from livevalidation.settings import *
 from django import template
 from django.forms import fields
+from django.forms import widgets
 
 register = template.Library()
 
@@ -30,13 +31,19 @@ class ValidationNode(template.Node):
             except AttributeError:
                 raise template.TemplateSyntaxError('Form %s has no fields'%self.form)
             prefix = '%s-'%self.form.prefix if self.form.prefix else ''
+        used_fields = {}
+        for name,field in fields.items():
+            if isinstance(field.widget, widgets.HiddenInput):
+                continue
+            used_fields[name] = field
+        fields = used_fields
         for name,field in fields.items():
             result.append(self.do_field('%s%s'%(prefix,name),field))
         try:
             _prefix = prefix.replace('-', '_')
             result.append(LV_EXTRA_SCRIPT % {
                 'prefix': _prefix,
-                'fieldname':'id_%s%s' % (_prefix, fields.keys()[1])
+                'fieldname':'id_%s%s' % (_prefix, fields.keys()[-1])
             })
         except:
             return ''
@@ -54,7 +61,8 @@ class ValidationNode(template.Node):
         fail = field.default_error_messages.get('invalid',None)
         extrakw = {'validMessage':' '}
         if fail:
-            extrakw['failureMessage'] = str(fail[:])
+            fail_text = fail[:]
+            extrakw['failureMessage'] = fail_text
         if self.formcls in LV_VALIDATORS:
             if name in LV_VALIDATORS[self.formcls]:
                 for v,kw in LV_VALIDATORS[self.formcls][name].items():
@@ -81,10 +89,10 @@ class ValidationNode(template.Node):
                 extrakw.update(kw)
                 lv.add(v, **extrakw)
                 
-        if str(lv):
+        if unicode(lv):
             return """try{
 %s
-}catch(e){}"""%str(lv)
+}catch(e){}"""%unicode(lv)
         return ''
     
 def live_validate(parser, token):

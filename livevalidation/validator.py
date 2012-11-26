@@ -19,6 +19,8 @@ def inner(items):
             yield '%s: %s'%(k,repr(v).lower())
         elif k == 'pattern':
             yield '%s: new RegExp(/%s/)'%(k,v)
+        elif k in ('onValid','onInvalid'):
+            yield '%s: %r'%(k,v)
         else:
             yield '%s: "%s"'%(k,v)
             
