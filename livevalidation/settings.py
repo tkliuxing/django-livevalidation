@@ -1,5 +1,6 @@
 # These dictionaries are very scary, use w/ care
 from django.conf import settings
+from django.utils.translation import ugettext as _
 from django.contrib.auth.forms import UserChangeForm,PasswordChangeForm
 from django.forms.fields import *
 from django.forms.models import ModelChoiceField, ModelChoiceIterator
@@ -16,11 +17,11 @@ LV_VALIDATORS = {
             Format: {
                 # parameters
                 'pattern': r'^\w+$',
-                'failureMessage': 'Alphanumeric characters only!'
+                'failureMessage': _('Alphanumeric characters only!')
             }
         }
     },
-    PasswordChangeForm: {   
+    PasswordChangeForm: {
         'old_password':{
             Presence: {}
         },
@@ -47,35 +48,47 @@ LV_FIELDS = {
         Format: {
             # parameters
             'pattern': r'^(19|20)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01]) ([0-1]\d|2[0-3]):([0-5]\d):([0-5]\d)$',
-            'failureMessage': 'Must be in valid "YYYY-MM-DD HH:MM:SS" format!'
+            'failureMessage': _(u'Must be in valid "YYYY-MM-DD HH:MM:SS" format!')
         }
     },
     DateField: {
         Format: {
             'pattern': r'^(19|20)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$',
-            'failureMessage': 'Must be in valid "YYYY-MM-DD" format!'
+            'failureMessage': _(u'Must be in valid "YYYY-MM-DD" format!')
         }
     },        
     EmailField: {
         Email: {}
     },
+    FloatField: {
+        Format:{
+            'pattern': r'^(\d*\.)?\d+$',
+            'failureMessage': _(u'Enter a number.')
+        }
+    },
     URLField:{
         Format:{
             'pattern': r'(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?',
-            'failureMessage': 'Must be a valid URL!'
+            'failureMessage': _(u'Enter a valid URL.')
+        }
+    },
+    IPAddressField:{
+        Format:{
+            'pattern': r'^(25[0-5]|2[0-4]\d|[0-1]?\d?\d)(\.(25[0-5]|2[0-4]\d|[0-1]?\d?\d)){3}$',
+            'failureMessage': _(u'Enter a valid IPv4 address.')
         }
     },
     ModelChoiceIterator:{
         Format:{
             'pattern':r'^[\w+|,]+$',
-            'failureMessage': 'Must be a comma separated list of keys!'
+            'failureMessage': _(u'Must be a comma separated list of keys!')
         }
     },
     ModelChoiceField:{},
     IntegerField:{
         Format:{
             'pattern':r'^\d+$',
-            'failureMessage': 'Must be a number!'
+            'failureMessage': _(u'Enter a whole number.')
         }
     },
     FileField:{}

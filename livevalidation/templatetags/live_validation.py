@@ -56,7 +56,7 @@ class ValidationNode(template.Node):
         #if isinstance(field, fields.SplitDateTimeField):
         #    fname += '_%d'%count
         if field.__class__ in LV_FIELDS and not LV_FIELDS[field.__class__]:
-            self.opts.update(onlyOnSubmit=True)        
+            self.opts.update(onlyOnSubmit=True)
         lv = LiveValidation(fname, **self.opts)
         fail = field.default_error_messages.get('invalid',None)
         extrakw = {'validMessage':' '}
