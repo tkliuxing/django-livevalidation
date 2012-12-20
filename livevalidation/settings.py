@@ -101,9 +101,9 @@ LV_FIELDS.update(getattr(settings, 'LV_FIELDS', {}))
 # The last bit of javascript to place in the tag
 # Does the automagic form submit
 LV_EXTRA_SCRIPT = getattr(settings,'LV_EXTRA_SCRIPT',"""
-var %(prefix)sautomaticOnSubmit = LV%(fieldname)s.form.onsubmit;
+var lv_%(prefix)sautomaticOnSubmit = LV%(fieldname)s.form.onsubmit;
 LV%(fieldname)s.form.onsubmit = function(){
-    var valid = %(prefix)sautomaticOnSubmit();
+    var valid = lv_%(prefix)sautomaticOnSubmit();
     if (valid)
         return true;
     return false;
