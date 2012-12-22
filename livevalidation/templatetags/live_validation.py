@@ -68,7 +68,7 @@ class ValidationNode(template.Node):
                 for v,kw in LV_VALIDATORS[self.formcls][name].items():
                     extrakw.update(kw)
                     lv.add(v,**extrakw)
-                return str(lv)
+                return unicode(lv)
         # We have to check for FileFields and ImageFields since if you are changing
         # a form, they will already be set, and you don't need to re-upload them.
         # TODO: Find a way around skipping file and image fields
